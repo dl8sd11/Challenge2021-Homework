@@ -69,6 +69,8 @@ class GraphicalView:
     def render_play(self):
         # draw background
         self.screen.fill(Const.BACKGROUND_COLOR)
+        self.render_position()
+        self.render_time()
 
         # draw players
         for player in self.model.players:
@@ -76,6 +78,27 @@ class GraphicalView:
             pg.draw.circle(self.screen, Const.PLAYER_COLOR[player.player_id], center, Const.PLAYER_RADIUS)
 
         pg.display.flip()
+    
+    def roll_to_text (self, roll):
+        return "Attack" if roll == 1 else "Defense"
+    
+    def render_text_with_center (self, text, center):
+        font = pg.font.Font(None, 36)
+        text_surface = font.render(text, 1, pg.Color('gray88'))
+        self.screen.blit(text_surface, text_surface.get_rect(center=center))
+
+    def render_position(self):
+        text = f"WASD: {self.roll_to_text(self.model.roll[0])} / " + \
+             f"DIR: {self.roll_to_text(self.model.roll[1])}"
+        text_center = (Const.ARENA_SIZE[0] / 2, 20)
+        self.render_text_with_center(text, text_center)
+
+    
+    def render_time(self):
+        text = f"Time: {self.model.timer // Const.FPS}"
+        text_center = (60, 20)
+        self.render_text_with_center(text, text_center)
+
 
     def render_stop(self):
         pass
