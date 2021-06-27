@@ -72,6 +72,8 @@ class EventEveryTick(BaseEvent):
 class EventTimesUp(BaseEvent):
     name = "Time's Up event"
 
+class EventChangePosition(BaseEvent):
+    name = "Change Position"
 
 class EventPlayerMove(BaseEvent):
     name = 'PlayerMove event'

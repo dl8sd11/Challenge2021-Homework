@@ -6,6 +6,7 @@ from EventManager import *
 import Const
 
 from math import sqrt
+from copy import copy
 
 class StateMachine(object):
     '''
@@ -77,7 +78,8 @@ class GameEngine:
         '''
         self.clock = pg.time.Clock()
         self.state_machine.push(Const.STATE_MENU)
-        self.players = [Player(0), Player(1)]
+        self.roll = [0, 1]
+        self.players = [Player(self.roll[0]), Player(self.roll[1])]
 
     def notify(self, event: BaseEvent):
         '''
@@ -96,7 +98,7 @@ class GameEngine:
 
                 self.timer -= 1
                 if self.timer == 0:
-                    self.ev_manager.post(EventTimesUp())
+                    self.ev_manager.post(EventChangePosition())
             elif cur_state == Const.STATE_ENDGAME:
                 self.update_endgame()
 
@@ -116,6 +118,14 @@ class GameEngine:
 
         elif isinstance(event, EventTimesUp):
             self.state_machine.push(Const.STATE_ENDGAME)
+
+        elif isinstance(event, EventChangePosition):
+            self.change_position()
+    
+    def change_position(self):
+        self.roll[0], self.roll[1] = self.roll[1], self.roll[0]
+        self.players = [Player(self.roll[0]), Player(self.roll[1])]
+        self.timer = Const.GAME_LENGTH
     
     def distance(self, player1, player2):
         '''
@@ -169,7 +179,7 @@ class GameEngine:
 class Player:
     def __init__(self, player_id):
         self.player_id = player_id
-        self.position = Const.PLAYER_INIT_POSITION[player_id] # is a pg.Vector2
+        self.position = copy(Const.PLAYER_INIT_POSITION[player_id]) # is a pg.Vector2
         self.speed = Const.SPEED_ATTACK if player_id == 1 else Const.SPEED_DEFENSE
 
     def move_direction(self, direction: str):
