@@ -5,6 +5,7 @@ import pygame as pg
 from EventManager import *
 import Const
 
+from math import sqrt
 
 class StateMachine(object):
     '''
@@ -111,9 +112,24 @@ class GameEngine:
 
         elif isinstance(event, EventPlayerMove):
             self.players[event.player_id].move_direction(event.direction)
+            self.check_collision()
 
         elif isinstance(event, EventTimesUp):
             self.state_machine.push(Const.STATE_ENDGAME)
+    
+    def distance(self, player1, player2):
+        '''
+        Calculate the distance between players
+        '''
+        return sqrt((player1.position.x - player2.position.x)**2 +
+            (player1.position.y - player2.position.y)**2)
+
+    def check_collision(self):
+        '''
+        If collision happens, quit the game
+        '''
+        if self.distance(self.players[0], self.players[1]) < 2 * Const.PLAYER_RADIUS:
+            self.ev_manager.post(EventQuit()) 
 
     def update_menu(self):
         '''
