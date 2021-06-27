@@ -101,7 +101,10 @@ class GraphicalView:
 
 
     def render_stop(self):
-        pass
+        self.screen.fill(Const.BACKGROUND_COLOR)
+        text_center = (Const.ARENA_SIZE[0] / 2, Const.ARENA_SIZE[1] / 2)
+        self.render_text_with_center("Paused", text_center)
+        pg.display.flip()
 
     def render_endgame(self):
         # draw background

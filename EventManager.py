@@ -54,6 +54,11 @@ class EventInitialize(BaseEvent):
 class EventQuit(BaseEvent):
     name = 'Quit event'
 
+class EventPause(BaseEvent):
+    name = 'Pause event'
+
+class EventContinue(BaseEvent):
+    name = 'Continue event'
 
 class EventStateChange(BaseEvent):
     name = 'StateChange event'

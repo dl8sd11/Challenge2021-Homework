@@ -99,6 +99,8 @@ class GameEngine:
                 self.timer -= 1
                 if self.timer == 0:
                     self.ev_manager.post(EventChangePosition())
+            elif cur_state == Const.STATE_PLAY:
+                pass
             elif cur_state == Const.STATE_ENDGAME:
                 self.update_endgame()
 
@@ -118,6 +120,12 @@ class GameEngine:
 
         elif isinstance(event, EventTimesUp):
             self.state_machine.push(Const.STATE_ENDGAME)
+        
+        elif isinstance(event, EventPause):
+            self.state_machine.push(Const.STATE_STOP)
+
+        elif isinstance(event, EventContinue):
+            self.state_machine.pop()
 
         elif isinstance(event, EventChangePosition):
             self.change_position()

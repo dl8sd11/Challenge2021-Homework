@@ -57,12 +57,19 @@ class Controller:
 
     def ctrl_play(self, key_down_events):
         keys = pg.key.get_pressed()
+
+        if keys[pg.K_p]:
+            self.ev_manager.post(EventPause())
+        
         for k, v in Const.PLAYER_KEYS.items():
             if keys[k]:
                 self.ev_manager.post(EventPlayerMove(*v))
 
     def ctrl_stop(self, key_down_events):
-        pass
+        keys = pg.key.get_pressed()
+
+        if keys[pg.K_c]:
+            self.ev_manager.post(EventContinue())
 
     def ctrl_endgame(self, key_down_events):
         pass
